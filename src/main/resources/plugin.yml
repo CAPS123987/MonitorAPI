@@ -1,0 +1,5 @@
+name: AdvancedTextDisplay
+version: '${version}'
+main: me.caps123987.advancedtextdisplay.AdvancedTextDisplay
+api-version: '1.21'
+authors: [CAPS123987]
