@@ -1,8 +1,11 @@
 plugins {
     id 'java'
+    id 'maven-publish'
 }
 
-group = 'me.caps123987'
+group = 'com.github.CAPS123987'
+
+//group = 'me.caps123987'
 version = '1.0-Beta'
 
 repositories {
