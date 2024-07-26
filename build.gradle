@@ -25,7 +25,11 @@ dependencies {
 }
 
 def targetJavaVersion = 21
-java.toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(targetJavaVersion)
+    }
+}
 /*java {
     def javaVersion = JavaVersion.toVersion(targetJavaVersion)
     sourceCompatibility = javaVersion
@@ -49,5 +53,16 @@ processResources {
     filteringCharset 'UTF-8'
     filesMatching('plugin.yml') {
         expand props
+    }
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = 'me.caps123987'
+            artifactId = 'AdvancedTextDisplay'
+            version = '1.0-Beta'
+            from components.java
+        }
     }
 }
