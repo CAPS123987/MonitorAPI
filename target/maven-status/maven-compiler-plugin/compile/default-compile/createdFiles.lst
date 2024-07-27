@@ -1,0 +1,7 @@
+me\caps123987\advancedtextdisplay\AdvancedTextDisplay.class
+me\caps123987\advancedtextdisplay\listeners\InteractListener.class
+me\caps123987\advancedtextdisplay\displays\InteractiveDisplay.class
+me\caps123987\advancedtextdisplay\messages\DisplayMessages.class
+me\caps123987\advancedtextdisplay\registry\DisplaysRegistry.class
+me\caps123987\advancedtextdisplay\utility\EntityUtility.class
+me\caps123987\advancedtextdisplay\displays\DisplayComponent.class
