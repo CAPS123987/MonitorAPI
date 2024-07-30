@@ -1,6 +1,6 @@
-package me.caps123987.advancedtextdisplay.registry;
+package me.caps123987.monitorapi.registry;
 
-import me.caps123987.advancedtextdisplay.displays.DisplayComponent;
+import me.caps123987.monitorapi.displays.DisplayComponent;
 
 import java.util.*;
 

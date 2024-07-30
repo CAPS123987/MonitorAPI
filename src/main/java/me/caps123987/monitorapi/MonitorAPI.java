@@ -1,15 +1,15 @@
-package me.caps123987.advancedtextdisplay;
+package me.caps123987.monitorapi;
 
-import me.caps123987.advancedtextdisplay.listeners.InteractListener;
+import me.caps123987.monitorapi.listeners.InteractListener;
 import org.bukkit.entity.Entity;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import static me.caps123987.advancedtextdisplay.registry.DisplaysRegistry.displayEntity;
-import static me.caps123987.advancedtextdisplay.registry.DisplaysRegistry.interactionEntity;
+import static me.caps123987.monitorapi.registry.DisplaysRegistry.displayEntity;
+import static me.caps123987.monitorapi.registry.DisplaysRegistry.interactionEntity;
 import static org.bukkit.Bukkit.getEntity;
 
-public final class AdvancedTextDisplay extends JavaPlugin {
-    public static AdvancedTextDisplay PLUGIN_INSTANCE;
+public final class MonitorAPI extends JavaPlugin {
+    public static MonitorAPI PLUGIN_INSTANCE;
 
     @Override
     public void onEnable() {

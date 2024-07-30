@@ -1,6 +1,6 @@
-package me.caps123987.advancedtextdisplay.displays;
+package me.caps123987.monitorapi.displays;
 
-import me.caps123987.advancedtextdisplay.messages.DisplayMessages;
+import me.caps123987.monitorapi.messages.DisplayMessages;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Interaction;
@@ -15,10 +15,10 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.function.BiConsumer;
 
-import static me.caps123987.advancedtextdisplay.AdvancedTextDisplay.PLUGIN_INSTANCE;
-import static me.caps123987.advancedtextdisplay.registry.DisplaysRegistry.displayEntity;
-import static me.caps123987.advancedtextdisplay.registry.DisplaysRegistry.interactionEntity;
-import static me.caps123987.advancedtextdisplay.utility.EntityUtility.createEntity;
+import static me.caps123987.monitorapi.MonitorAPI.PLUGIN_INSTANCE;
+import static me.caps123987.monitorapi.registry.DisplaysRegistry.displayEntity;
+import static me.caps123987.monitorapi.registry.DisplaysRegistry.interactionEntity;
+import static me.caps123987.monitorapi.utility.EntityUtility.createEntity;
 
 public class DisplayComponent {
     protected TextDisplay componentDisplay;
@@ -85,6 +85,20 @@ public class DisplayComponent {
      */
     public void setDisplayText(String text) {
         componentDisplay.text(Component.text(text));
+    }
+    /**
+     * Sets text of this display component to list of string each representing new line
+     *
+     * @param text list of string
+     */
+    public void setDisplayTextLines(List<String> text)  {
+        Component builder = Component.text("");
+
+        for(String line : text){
+            builder = builder.append(Component.text(line)).appendNewline();
+        }
+
+        componentDisplay.text(builder);
     }
     /**
      * sets text of this display component to component

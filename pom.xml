@@ -5,11 +5,11 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>me.CAPS123987</groupId>
-  <artifactId>AdvancedTextDisplay</artifactId>
+  <artifactId>MonitorApi</artifactId>
   <version>1.0-Beta</version>
   <packaging>jar</packaging>
 
-  <name>AdvancedTextDisplay</name>
+  <name>Monitor API</name>
 
   <properties>
     <java.version>21</java.version>

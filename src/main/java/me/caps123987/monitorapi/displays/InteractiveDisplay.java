@@ -1,4 +1,4 @@
-package me.caps123987.advancedtextdisplay.displays;
+package me.caps123987.monitorapi.displays;
 
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
@@ -7,8 +7,8 @@ import org.bukkit.entity.TextDisplay;
 
 import java.util.*;
 
-import static me.caps123987.advancedtextdisplay.registry.DisplaysRegistry.displayEntity;
-import static me.caps123987.advancedtextdisplay.utility.EntityUtility.createEntity;
+import static me.caps123987.monitorapi.registry.DisplaysRegistry.displayEntity;
+import static me.caps123987.monitorapi.utility.EntityUtility.createEntity;
 
 public class InteractiveDisplay {
     protected TextDisplay mainDisplay;

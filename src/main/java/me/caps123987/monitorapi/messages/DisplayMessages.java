@@ -1,4 +1,4 @@
-package me.caps123987.advancedtextdisplay.messages;
+package me.caps123987.monitorapi.messages;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextColor;
