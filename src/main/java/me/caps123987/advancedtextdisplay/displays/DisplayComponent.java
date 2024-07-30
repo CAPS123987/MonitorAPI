@@ -21,17 +21,17 @@ import static me.caps123987.advancedtextdisplay.registry.DisplaysRegistry.intera
 import static me.caps123987.advancedtextdisplay.utility.EntityUtility.createEntity;
 
 public class DisplayComponent {
-    private TextDisplay componentDisplay;
-    private Interaction componentInteraction;
+    protected TextDisplay componentDisplay;
+    protected Interaction componentInteraction;
 
-    private Vector relativePosition;
+    protected Vector relativePosition;
 
-    private BiConsumer<DisplayComponent,PlayerInteractAtEntityEvent> callback;
+    protected BiConsumer<DisplayComponent,PlayerInteractAtEntityEvent> callback;
 
-    private InteractiveDisplay parentDisplay;
-    private Set<UUID> hasPlayerCooldown;
-    private boolean cooldownEnabled = false;
-    private int cooldownTime;
+    protected InteractiveDisplay parentDisplay;
+    protected Set<UUID> hasPlayerCooldown;
+    protected boolean cooldownEnabled = false;
+    protected int cooldownTime;
 
     /**
      * Creates object of DisplayComponent, which you can set some data <br>

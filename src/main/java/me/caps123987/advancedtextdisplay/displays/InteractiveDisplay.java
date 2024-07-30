@@ -11,13 +11,13 @@ import static me.caps123987.advancedtextdisplay.registry.DisplaysRegistry.displa
 import static me.caps123987.advancedtextdisplay.utility.EntityUtility.createEntity;
 
 public class InteractiveDisplay {
-    private TextDisplay mainDisplay;
-    private final Set<DisplayComponent> components = new HashSet<>();
-    private final Map<String,Object> data = new HashMap<>();
-    private Location location;
+    protected TextDisplay mainDisplay;
+    protected final Set<DisplayComponent> components = new HashSet<>();
+    protected final Map<String,Object> data = new HashMap<>();
+    protected Location location;
 
-    private boolean hasHeader = false;
-    private Component header = Component.text("");
+    protected boolean hasHeader = false;
+    protected Component header = Component.text("");
 
     public InteractiveDisplay() {
         mainDisplay = createEntity(TextDisplay.class);
