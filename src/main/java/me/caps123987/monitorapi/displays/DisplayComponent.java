@@ -29,6 +29,7 @@ public class DisplayComponent {
     protected BiConsumer<DisplayComponent,PlayerInteractAtEntityEvent> callback;
 
     protected InteractiveDisplay parentDisplay;
+    protected RenderMode mode;
     protected Set<UUID> hasPlayerCooldown;
     protected boolean cooldownEnabled = false;
     protected int cooldownTime;
@@ -39,6 +40,7 @@ public class DisplayComponent {
      * @param relativePosition relative position of this display component to the {@link InteractiveDisplay } (parent display)
      */
     public DisplayComponent(Vector relativePosition) {
+
         this.relativePosition = relativePosition;
         componentDisplay = createEntity(TextDisplay.class);
         componentInteraction = createEntity(Interaction.class);
@@ -50,7 +52,9 @@ public class DisplayComponent {
     /**
      * internal call to initiate this display component
      */
-    public void init(){
+    public void init(RenderMode mode){
+        this.mode = mode;
+
         float yaw = parentDisplay.getLocation().getYaw();
         float pitch = parentDisplay.getLocation().getPitch();
 

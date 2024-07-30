@@ -5,6 +5,9 @@
 *.ipr
 *.iws
 
+# target no need
+target/
+
 # IntelliJ
 out/
 # mpeltonen/sbt-idea plugin

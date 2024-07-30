@@ -1,5 +1,7 @@
 package me.caps123987.monitorapi.displays;
 
+import me.caps123987.monitorapi.registry.DisplaysRegistry;
+import me.caps123987.monitorapi.utility.Packets;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.entity.Display;
@@ -7,19 +9,22 @@ import org.bukkit.entity.TextDisplay;
 
 import java.util.*;
 
-import static me.caps123987.monitorapi.registry.DisplaysRegistry.displayEntity;
 import static me.caps123987.monitorapi.utility.EntityUtility.createEntity;
 
 public class InteractiveDisplay {
     protected TextDisplay mainDisplay;
     protected final Set<DisplayComponent> components = new HashSet<>();
     protected final Map<String,Object> data = new HashMap<>();
+    protected final List<UUID> viewers = new ArrayList<>();
     protected Location location;
 
     protected boolean hasHeader = false;
     protected Component header = Component.text("");
 
-    public InteractiveDisplay() {
+    protected final RenderMode mode;
+
+    public InteractiveDisplay(RenderMode mode) {
+        this.mode = mode;
         mainDisplay = createEntity(TextDisplay.class);
         mainDisplay.setBillboard(Display.Billboard.FIXED);
         mainDisplay.setAlignment(TextDisplay.TextAlignment.CENTER);
@@ -43,11 +48,21 @@ public class InteractiveDisplay {
     public void create(Location location) {
         this.location = location;
         mainDisplay.setRotation(location.getYaw(), location.getPitch());
-        mainDisplay = (TextDisplay) mainDisplay.createSnapshot().createEntity(location);
-        displayEntity.add(mainDisplay.getUniqueId());
+        mainDisplay.teleport(location);
+
+        if(!mode.isSharedDisplay()) {
+            mainDisplay = (TextDisplay) mainDisplay.createSnapshot().createEntity(location);
+            DisplaysRegistry.displayEntity.add(mainDisplay.getUniqueId());
+        }else{
+            if(mode.isAllPlayers()){
+                Packets.spawnTextDisplay(mainDisplay);
+            }else{
+                Packets.spawnTextDisplay(mainDisplay, viewers);
+            }
+        }
 
         for(DisplayComponent component : components){
-            component.init();
+            component.init(mode);
         }
     }
 
@@ -78,8 +93,23 @@ public class InteractiveDisplay {
      */
     public void setMainText(String text) {
         Component builder = Component.text("");
-        if(hasHeader)builder = builder.append(header);
+        if(hasHeader)builder = builder.append(header).appendNewline();
         builder = builder.append(Component.text(text));
+
+        mainDisplay.text(builder);
+    }
+    /**
+     * Sets text of the main display to list of string each representing new line
+     *
+     * @param text list of string
+     */
+    public void setMainTextLines(List<String> text)  {
+        Component builder = Component.text("");
+        if(hasHeader)builder = builder.append(header).appendNewline();
+
+        for(String line : text){
+            builder = builder.append(Component.text(line)).appendNewline();
+        }
 
         mainDisplay.text(builder);
     }
@@ -90,7 +120,7 @@ public class InteractiveDisplay {
      */
     public void setMainText(Component text) {
         Component builder = Component.text("");
-        if(hasHeader) builder = builder.append(header);
+        if(hasHeader) builder = builder.append(header).appendNewline();
         builder = builder.append(text);
 
         mainDisplay.text(builder);
@@ -103,9 +133,7 @@ public class InteractiveDisplay {
     public void setMainText(List<Component> text)  {
         Component builder = Component.text("");
 
-        if(hasHeader){
-            builder = builder.append(header).appendNewline();
-        }
+        if(hasHeader)builder = builder.append(header).appendNewline();
 
         for(Component line : text){
             builder = builder.append(line).appendNewline();
