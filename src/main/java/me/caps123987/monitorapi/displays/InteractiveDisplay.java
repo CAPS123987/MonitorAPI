@@ -11,7 +11,6 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 import static me.caps123987.monitorapi.utility.EntityUtility.createEntity;
-import static org.bukkit.Bukkit.getPlayer;
 
 /**
  * InteractiveDisplay is a class that allows creation of interactive displays <br>
@@ -211,7 +210,6 @@ public class InteractiveDisplay implements PacketDisplayMethodes{
     public void spawnDisplayNewPlayer(UUID uuid){
         if(getRenderMode().isForAllPlayers()) {
             getPlayersDisplays().putAll(Packets.spawnTextDisplay(getDisplay(),Set.of(uuid)));
-            getOnSpawnCallback().accept(getPlayersDisplays().get(uuid),uuid);
         }
         for(DisplayComponent component : components){
             component.spawnDisplayNewPlayer(uuid);
