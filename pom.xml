@@ -5,11 +5,11 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>me.CAPS123987</groupId>
-  <artifactId>AdvancedTextDisplay</artifactId>
+  <artifactId>MonitorApi</artifactId>
   <version>1.0-Beta</version>
   <packaging>jar</packaging>
 
-  <name>AdvancedTextDisplay</name>
+  <name>Monitor API</name>
 
   <properties>
     <java.version>21</java.version>
@@ -51,8 +51,17 @@
 
   <repositories>
       <repository>
+          <id>evoke-repo-snapshots</id>
+          <name>EvokeGames Maven Repo</name>
+          <url>https://maven.evokegames.gg/snapshots</url>
+      </repository>
+      <repository>
           <id>papermc-repo</id>
           <url>https://repo.papermc.io/repository/maven-public/</url>
+      </repository>
+      <repository>
+          <id>codemc-releases</id>
+          <url>https://repo.codemc.io/repository/maven-releases/</url>
       </repository>
       <repository>
           <id>sonatype</id>
@@ -66,6 +75,17 @@
           <artifactId>paper-api</artifactId>
           <version>1.21-R0.1-SNAPSHOT</version>
           <scope>provided</scope>
+      </dependency>
+      <dependency>
+          <groupId>com.github.retrooper</groupId>
+          <artifactId>packetevents-spigot</artifactId>
+          <version>2.4.0</version>
+          <scope>provided</scope>
+      </dependency>
+      <dependency>
+          <groupId>me.tofaa.entitylib</groupId>
+          <artifactId>spigot</artifactId>
+          <version>2.4.7-SNAPSHOT</version>
       </dependency>
   </dependencies>
 </project>

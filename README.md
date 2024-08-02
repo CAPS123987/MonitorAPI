@@ -13,7 +13,7 @@ dependencyResolutionManagement {
 }
 
 dependencies {
-    implementation 'com.github.CAPS123987:AdvancedTextDisplay:Tag'
+    implementation 'com.github.CAPS123987:MonitorAPI:releases-SNAPSHOT'
 }
 ```
 ## Maven
@@ -27,8 +27,8 @@ dependencies {
 
 <dependency>
     <groupId>com.github.CAPS123987</groupId>
-    <artifactId>AdvancedTextDisplay</artifactId>
-    <version>Tag</version>
+    <artifactId>MonitorAPI</artifactId>
+    <version>releases-SNAPSHOT</version>
 </dependency>
 ```
 

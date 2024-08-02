@@ -1,4 +1,4 @@
-package me.caps123987.advancedtextdisplay.utility;
+package me.caps123987.monitorapi.utility;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;

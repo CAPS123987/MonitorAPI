@@ -1,4 +1,4 @@
-package me.caps123987.advancedtextdisplay.listeners;
+package me.caps123987.monitorapi.listeners;
 
 import org.bukkit.entity.Entity;
 import org.bukkit.event.EventHandler;
@@ -7,7 +7,7 @@ import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 
 import java.util.UUID;
 
-import static me.caps123987.advancedtextdisplay.registry.DisplaysRegistry.interactionEntity;
+import static me.caps123987.monitorapi.registry.DisplaysRegistry.interactionEntity;
 
 public class InteractListener implements Listener {
 
