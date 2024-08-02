@@ -6,22 +6,19 @@ import com.github.retrooper.packetevents.util.Vector3d;
 import com.github.retrooper.packetevents.wrapper.PacketWrapper;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerSpawnEntity;
 import me.caps123987.monitorapi.MonitorAPI;
-import me.tofaa.entitylib.EntityLib;
 import me.tofaa.entitylib.meta.EntityMeta;
 import me.tofaa.entitylib.meta.display.AbstractDisplayMeta;
 import me.tofaa.entitylib.meta.display.TextDisplayMeta;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.TextDisplay;
 
 import java.util.*;
-import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
-import static me.caps123987.monitorapi.utility.Conversions.toSusVector3f;
 import static me.caps123987.monitorapi.utility.Conversions.toQuaternion4f;
-import static org.bukkit.Bukkit.*;
+import static me.caps123987.monitorapi.utility.Conversions.toSusVector3f;
+import static org.bukkit.Bukkit.getServer;
 
 public class Packets {
     //https://github.com/Tofaa2/EntityLib?tab=readme-ov-file

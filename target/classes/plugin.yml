@@ -3,9 +3,9 @@ version: '1.0-Beta'
 main: me.caps123987.monitorapi.MonitorAPI
 api-version: '1.21'
 authors: [CAPS123987]
-commands:
-  dtest:
-    description: Test command
-    usage: /dtest
+##commands:
+##  dtest:
+##    description: Test command
+##    usage: /dtest
 depend:
   - packetevents

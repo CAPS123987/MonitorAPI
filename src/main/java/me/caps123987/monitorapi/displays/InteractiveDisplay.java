@@ -11,7 +11,6 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 import static me.caps123987.monitorapi.utility.EntityUtility.createEntity;
-import static org.bukkit.Bukkit.getPlayer;
 
 /**
  * InteractiveDisplay is a class that allows creation of interactive displays <br>

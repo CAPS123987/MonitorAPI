@@ -10,7 +10,10 @@ import org.bukkit.entity.TextDisplay;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.util.Vector;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 import java.util.function.BiConsumer;
 
 import static me.caps123987.monitorapi.MonitorAPI.PLUGIN_INSTANCE;

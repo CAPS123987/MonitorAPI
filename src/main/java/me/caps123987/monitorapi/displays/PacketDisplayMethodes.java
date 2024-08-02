@@ -1,6 +1,5 @@
 package me.caps123987.monitorapi.displays;
 
-import me.caps123987.monitorapi.errors.PlayerNotViewing;
 import me.caps123987.monitorapi.registry.DisplaysRegistry;
 import me.caps123987.monitorapi.utility.Packets;
 import me.caps123987.monitorapi.utility.TextUtility;
@@ -10,7 +9,10 @@ import org.bukkit.Location;
 import org.bukkit.entity.Display;
 import org.bukkit.entity.TextDisplay;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
