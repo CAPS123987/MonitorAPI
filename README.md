@@ -13,7 +13,7 @@ dependencyResolutionManagement {
 }
 
 dependencies {
-    implementation 'com.github.CAPS123987:MonitorAPI:releases-SNAPSHOT'
+    implementation 'com.github.CAPS123987:MonitorAPI:VERSION'
 }
 ```
 ## Maven
@@ -28,7 +28,7 @@ dependencies {
 <dependency>
     <groupId>com.github.CAPS123987</groupId>
     <artifactId>MonitorAPI</artifactId>
-    <version>releases-SNAPSHOT</version>
+    <version>VERSION</version>
 </dependency>
 ```
 
