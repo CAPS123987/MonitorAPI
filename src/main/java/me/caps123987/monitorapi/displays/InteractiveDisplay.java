@@ -210,7 +210,6 @@ public class InteractiveDisplay implements PacketDisplayMethodes{
     public void spawnDisplayNewPlayer(UUID uuid){
         if(getRenderMode().isForAllPlayers()) {
             getPlayersDisplays().putAll(Packets.spawnTextDisplay(getDisplay(),Set.of(uuid)));
-            getOnSpawnCallback().accept(getPlayersDisplays().get(uuid),uuid);
         }
         for(DisplayComponent component : components){
             component.spawnDisplayNewPlayer(uuid);
