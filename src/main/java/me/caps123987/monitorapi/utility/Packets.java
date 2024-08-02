@@ -16,6 +16,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.TextDisplay;
 
 import java.util.*;
+import java.util.function.BiConsumer;
+import java.util.stream.Collectors;
 
 import static me.caps123987.monitorapi.utility.Conversions.toSusVector3f;
 import static me.caps123987.monitorapi.utility.Conversions.toQuaternion4f;
@@ -23,47 +25,52 @@ import static org.bukkit.Bukkit.*;
 
 public class Packets {
     //https://github.com/Tofaa2/EntityLib?tab=readme-ov-file
-    public static void spawnTextDisplay(TextDisplay display){
-        spawnTextDisplay(display, getServer().getOnlinePlayers().stream().map(Player::getUniqueId).toList());
+    public static Map<UUID,TextDisplay> spawnTextDisplay(TextDisplay display){
+        return spawnTextDisplay(display, getServer().getOnlinePlayers().stream().map(Player::getUniqueId).collect(Collectors.toSet()));
     }
-    public static void spawnTextDisplay(TextDisplay display, List<UUID> players){
-        /*WrapperPlayServerSpawnEntity packet = new WrapperPlayServerSpawnEntity(
-                display.getEntityId(),
-                display.getUniqueId(),
-                EntityTypes.TEXT_DISPLAY,
-                Positions.toPapiLocation(display.getLocation()),
-                display.getYaw(),
-                0,
-                new Vector3d()
-        );*/
+    public static Map<UUID,TextDisplay> spawnTextDisplay(TextDisplay display, Set<UUID> players){
+        Map<UUID,TextDisplay> entityIds = new HashMap<>();
+
+        for(UUID player : players){
+            TextDisplay playerDisplay = (TextDisplay) display.createSnapshot().createEntity(display.getWorld());
+            playerDisplay.teleport(display.getLocation());
+            spawnTextDisplay(playerDisplay, player);
+            entityIds.put(player, playerDisplay);
+        }
+        return entityIds;
+    }
+    public static void spawnTextDisplay(TextDisplay display, UUID player){
+        spawnTextDisplay(display, display, player);
+    }
+    public static void spawnTextDisplay(TextDisplay display, TextDisplay idDisplay, UUID player){
         WrapperPlayServerSpawnEntity packet = new WrapperPlayServerSpawnEntity(
-                display.getEntityId(),
-                Optional.of(UUID.randomUUID()),
+                idDisplay.getEntityId(),
+                Optional.of(idDisplay.getUniqueId()),
                 EntityTypes.TEXT_DISPLAY,
-                new Vector3d(display.getLocation().getX(), display.getLocation().getY() + 1, display.getLocation().getZ()),
+                new Vector3d(display.getLocation().getX(), display.getLocation().getY(), display.getLocation().getZ()),
                 display.getPitch(),
                 display.getYaw(),
                 0f,
                 0,
                 Optional.empty()
         );
-        sendPacket(packet,players);
+
+        sendPacket(packet,player);
         TextDisplayMeta meta = createTextDisplayMeta(display);
-        sendPacket(meta.createPacket(), players);
+        Bukkit.getScheduler().runTaskLater(MonitorAPI.PLUGIN_INSTANCE, () -> {
+            sendPacket(meta.createPacket(), player);
+        },5);
     }
-    public static void sendPacket(PacketWrapper<?> packet, List<UUID> players){
-        players.forEach(uuid -> {
-            Player player = getServer().getPlayer(uuid);
-            if(player==null){
-                return;
-            }
-            Bukkit.getScheduler().runTaskAsynchronously(MonitorAPI.PLUGIN_INSTANCE, () -> {
-                PacketEvents.getAPI().getPlayerManager().sendPacket(player, packet);
-            });
+    public static void sendPacket(PacketWrapper<?> packet, UUID uuid){
+        Player player = getServer().getPlayer(uuid);
+        if(player==null){
+            return;
+        }
+        Bukkit.getScheduler().runTaskAsynchronously(MonitorAPI.PLUGIN_INSTANCE, () -> {
+            PacketEvents.getAPI().getPlayerManager().sendPacket(player, packet);
         });
     }
     public static TextDisplayMeta createTextDisplayMeta(TextDisplay display){
-        Bukkit.broadcast(display.text());
         TextDisplayMeta meta = (TextDisplayMeta) EntityMeta.createMeta(display.getEntityId(), EntityTypes.TEXT_DISPLAY);
         meta.setText(display.text());
         meta.setShadow(display.isShadowed());
@@ -76,35 +83,23 @@ public class Packets {
         meta.setViewRange(display.getViewRange());
         meta.setScale(toSusVector3f(display.getTransformation().getScale()));
         meta.setTranslation(toSusVector3f(display.getTransformation().getTranslation()));
+        meta.setLeftRotation(toQuaternion4f(display.getTransformation().getLeftRotation()));
         meta.setRightRotation(toQuaternion4f(display.getTransformation().getRightRotation()));
-        meta.setRightRotation(toQuaternion4f(display.getTransformation().getRightRotation()));
-
+        meta.setWidth((float) display.getWidth());
+        meta.setHeight((float) display.getHeight());
 
         return meta;
     }
-    public static void spawnPig(TextDisplay display, Location loc){
-        /*WrapperPlayServerSpawnEntity packet = new WrapperPlayServerSpawnEntity(
-                display.getEntityId(),
-                display.getUniqueId(),
-                EntityTypes.TEXT_DISPLAY,
-                Positions.toPapiLocation(display.getLocation()),
-                display.getYaw(),
-                0,
-                new Vector3d()
-        );*/
-        UUID uuid = UUID.randomUUID();
-        int id = EntityLib.getPlatform().getEntityIdProvider().provide(uuid,EntityTypes.PIG);
-        WrapperPlayServerSpawnEntity packet = new WrapperPlayServerSpawnEntity(
-                id,
-                Optional.of(uuid),
-                EntityTypes.PIG,
-                new Vector3d(loc.getX(), loc.getY() + 1, loc.getZ()),
-                display.getPitch(),
-                display.getYaw(),
-                0f,
-                0,
-                Optional.empty()
-        );
-        sendPacket(packet,new ArrayList<>(Collections.singleton(getPlayer("CAPS123987").getUniqueId())));
+    public static void updateTextDisplayToAllPlayers(TextDisplay display){
+        updateTextDisplay(display, getServer().getOnlinePlayers().stream().map(Player::getUniqueId).collect(Collectors.toSet()));
+    }
+    public static void updateTextDisplay(TextDisplay display, Set<UUID> players){
+        for(UUID player : players){
+            updateOneTextDisplay(display, player);
+        }
+    }
+    public static void updateOneTextDisplay(TextDisplay display, UUID player){
+        TextDisplayMeta meta = createTextDisplayMeta(display);
+        sendPacket(meta.createPacket(), player);
     }
 }

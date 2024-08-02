@@ -4,6 +4,7 @@ import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.manager.player.PlayerManager;
 import io.github.retrooper.packetevents.factory.spigot.SpigotPacketEventsBuilder;
 import me.caps123987.monitorapi.listeners.InteractListener;
+import me.caps123987.monitorapi.listeners.JoinListener;
 import me.caps123987.monitorapi.tests.comm;
 import me.tofaa.entitylib.APIConfig;
 import me.tofaa.entitylib.EntityLib;
@@ -45,8 +46,10 @@ public final class MonitorAPI extends JavaPlugin {
         PLAYER_MANAGER = PacketEvents.getAPI().getPlayerManager();
 
         InteractListener interactListener = new InteractListener();
+        JoinListener joinListener = new JoinListener();
         getServer().getPluginManager().registerEvents(interactListener,this);
-        getCommand("dtest").setExecutor(new comm());
+        getServer().getPluginManager().registerEvents(joinListener,this);
+        //getCommand("dtest").setExecutor(new comm());
     }
 
     @Override

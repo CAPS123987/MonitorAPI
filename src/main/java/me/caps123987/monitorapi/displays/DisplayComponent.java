@@ -1,254 +1,84 @@
 package me.caps123987.monitorapi.displays;
 
-import me.caps123987.monitorapi.messages.DisplayMessages;
-import net.kyori.adventure.text.Component;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Interaction;
-import org.bukkit.entity.Player;
+import org.bukkit.Location;
 import org.bukkit.entity.TextDisplay;
-import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.util.Vector;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 import java.util.function.BiConsumer;
 
-import static me.caps123987.monitorapi.MonitorAPI.PLUGIN_INSTANCE;
-import static me.caps123987.monitorapi.registry.DisplaysRegistry.displayEntity;
-import static me.caps123987.monitorapi.registry.DisplaysRegistry.interactionEntity;
-import static me.caps123987.monitorapi.utility.EntityUtility.createEntity;
-
-public class DisplayComponent {
-    protected TextDisplay componentDisplay;
-    protected Interaction componentInteraction;
-
+public abstract class DisplayComponent implements PacketDisplayMethodes{
     protected Vector relativePosition;
+    protected Vector calculatedRelativePosition;
+    protected final Map<UUID, TextDisplay> playersDisplays = new HashMap<>();
+    protected InteractiveDisplay interactiveDisplay;
+    protected BiConsumer<TextDisplay, UUID> onSpawnCallback = (t,u)->{};
 
-    protected BiConsumer<DisplayComponent,PlayerInteractAtEntityEvent> callback;
-
-    protected InteractiveDisplay parentDisplay;
-    protected RenderMode mode;
-    protected Set<UUID> hasPlayerCooldown;
-    protected boolean cooldownEnabled = false;
-    protected int cooldownTime;
-
-    /**
-     * Creates object of DisplayComponent, which you can set some data <br>
-     *
-     * @param relativePosition relative position of this display component to the {@link InteractiveDisplay } (parent display)
-     */
-    public DisplayComponent(Vector relativePosition) {
-
-        this.relativePosition = relativePosition;
-        componentDisplay = createEntity(TextDisplay.class);
-        componentInteraction = createEntity(Interaction.class);
-
-        componentInteraction.setInteractionHeight(1.0f);
-        componentInteraction.setInteractionWidth(1.0f);
+    protected boolean spawned = false;
+    DisplayComponent(Vector relativePosition) {
+        this.relativePosition = relativePosition.multiply(new Vector(-1,1,-1));
     }
 
     /**
-     * internal call to initiate this display component
+     * internal call, fired after {@link InteractiveDisplay#create}, should not be used <br>
+     * after this the {@link #init} is called
      */
-    public void init(RenderMode mode){
-        this.mode = mode;
-
-        float yaw = parentDisplay.getLocation().getYaw();
-        float pitch = parentDisplay.getLocation().getPitch();
+    public void baseInit() {
+        float yaw = interactiveDisplay.getLocation().getYaw();
+        float pitch = interactiveDisplay.getLocation().getPitch();
 
         updateRelativePosition(yaw,pitch);
 
-        componentInteraction.setRotation(yaw, pitch);
+        Location spawnLoc = interactiveDisplay.getLocation().clone().add(calculatedRelativePosition);
+        spawnLoc.setPitch(pitch);
+        spawnLoc.setYaw(yaw);
 
-        componentInteraction = (Interaction) componentInteraction.createSnapshot().createEntity(parentDisplay.getLocation().clone().add(relativePosition));
-
-        componentDisplay.setRotation(yaw, pitch);
-        componentDisplay = (TextDisplay) componentDisplay.createSnapshot().createEntity(parentDisplay.getLocation().clone().add(relativePosition));
-
-        displayEntity.add(componentDisplay.getUniqueId());
-        interactionEntity.put(componentInteraction.getUniqueId(),this);
+        init(yaw,pitch,spawnLoc);
     }
-
+    /**
+     * internal call to initiate this display component
+     */
+    abstract void init(float yaw, float pitch, Location spawnedLocation);
     /**
      * rotates the original vector according to the yaw and pitch
      * @param yaw yaw
      * @param pitch pitch
      */
     public void updateRelativePosition(double yaw, double pitch){
-        relativePosition = relativePosition.rotateAroundAxis(new Vector(1,0,0),Math.toRadians(-pitch));
+        calculatedRelativePosition = relativePosition.rotateAroundAxis(new Vector(1,0,0),Math.toRadians(-pitch));
 
-        relativePosition = relativePosition.rotateAroundAxis(new Vector(0,1,0),Math.toRadians(-yaw)).multiply(new Vector(-1,1,-1));
+        calculatedRelativePosition = calculatedRelativePosition.rotateAroundAxis(new Vector(0,1,0),Math.toRadians(-yaw)).multiply(new Vector(-1,1,-1));
     }
 
-    /**
-     * sets text of this display component to string
-     *
-     * @param text string text
-     */
-    public void setDisplayText(String text) {
-        componentDisplay.text(Component.text(text));
-    }
-    /**
-     * Sets text of this display component to list of string each representing new line
-     *
-     * @param text list of string
-     */
-    public void setDisplayTextLines(List<String> text)  {
-        Component builder = Component.text("");
-
-        for(String line : text){
-            builder = builder.append(Component.text(line)).appendNewline();
-        }
-
-        componentDisplay.text(builder);
-    }
-    /**
-     * sets text of this display component to component
-     *
-     * @param text component text
-     */
-    public void setDisplayText(Component text) {
-        componentDisplay.text(text);
-    }
-    /**
-     * Sets text of this display component to list of components each representing new line
-     *
-     * @param text list of components
-     */
-    public void setDisplayText(List<Component> text)  {
-        Component builder = Component.text("");
-
-        for(Component line : text){
-            builder = builder.append(line).appendNewline();
-        }
-
-        componentDisplay.text(builder);
-    }
     /**
      * Sets the parent display {@link InteractiveDisplay } <br>
      * NOT RECOMMENDED
      *
-     * @param parentDisplay the parent Display
+     * @param interactiveDisplay the parent Display
      */
-    public void setParentDisplay(InteractiveDisplay parentDisplay) {
-        this.parentDisplay = parentDisplay;
+    public void setInteractiveDisplay(InteractiveDisplay interactiveDisplay) {
+        this.interactiveDisplay = interactiveDisplay;
     }
-
-    /**
-     * internal call to fire this display component {@link #onClick} with cooldown implementation
-     * custom message for the cooldown can be set by using {@link DisplayMessages}
-     */
-    public void callClick(PlayerInteractAtEntityEvent event) {
-        if(cooldownEnabled){
-            Player p = event.getPlayer();
-            UUID uuid = p.getUniqueId();
-
-            if(hasPlayerCooldown.contains(uuid)) {
-                p.sendMessage(DisplayMessages.CLICK_COOLDOWN);
-                return;
-            }
-
-            hasPlayerCooldown.add(uuid);
-            Bukkit.getScheduler().runTaskLater(PLUGIN_INSTANCE,()-> hasPlayerCooldown.remove(uuid),cooldownTime);
-        }
-        callback.accept(this,event);
-    }
-
-    /**
-     * gets text display of this display component
-     *
-     */
-    public TextDisplay getComponentDisplay() {
-        return componentDisplay;
-    }
-
-    /**
-     * sets text display of this display component
-     *
-     */
-    public void setComponentDisplay(TextDisplay componentDisplay) {
-        this.componentDisplay = componentDisplay;
-    }
-
-    /**
-     * gets interaction of this display component
-     *
-     */
-    public Interaction getComponentInteraction() {
-        return componentInteraction;
-    }
-
-    /**
-     * sets interaction of this display component
-     *
-     */
-    public void setComponentInteraction(Interaction componentInteraction) {
-        this.componentInteraction = componentInteraction;
-    }
-
-    /**
-     * this callback is fired after {@link #callClick} and you can use it for any interaction with this system
-     *
-     * @param callback BiConsumer that will be called after {@link #callClick}
-     */
-    public void onClick(BiConsumer<DisplayComponent, PlayerInteractAtEntityEvent> callback) {
-        this.callback = callback;
-    }
-
-    /**
-     * gets the callback from {@link #onClick}
-     */
-    public BiConsumer<DisplayComponent, PlayerInteractAtEntityEvent> getOnClick() {
-        return callback;
-    }
-
     /**
      * gets the {@link InteractiveDisplay} (parent of this display component)
      */
-    public InteractiveDisplay getParentDisplay() {
-        return parentDisplay;
+    public InteractiveDisplay getInteractiveDisplay() {
+        return interactiveDisplay;
     }
     /**
-     * gets the relative vector <br>
-     * before {@link #init()} not rotated vector (original) <br>
-     * after {@link #init()} rotated vector
+     * gets callback when textdisplay for new player spawns
      */
-    public Vector getRelativePosition() {
-        return relativePosition;
-    }
-    /**
-     * sets the relative vector (not rotated)
-     *
-     */
-    public void setRelativePosition(Vector relativePosition) {
-        this.relativePosition = relativePosition;
+    public BiConsumer<TextDisplay,UUID> getOnSpawnCallback(){
+        return onSpawnCallback;
     }
 
     /**
-     * enables the cooldown (default value 0 ticks) <br>
-     * custom message can be set by using {@link DisplayMessages}
-     **/
-    public void enableCooldown(){
-        cooldownEnabled = true;
-        hasPlayerCooldown = new HashSet<>();
-        cooldownTime = 0;
-    }
-
-    /**
-     * sets the cooldown time to x ticks
-     * custom message can be set by using {@link DisplayMessages}
-     * @param ticks time in ticks
+     * sets callback when display is created for new player
+     * @param callback
      */
-    public void setCooldownTime(int ticks){
-        cooldownTime = ticks;
-    }
-    /**
-     * gets the cooldown time
-     * custom message can be set by using {@link DisplayMessages}
-     */
-    public int getCooldownTime(){
-        return cooldownTime;
+    public void setOnSpawnCallback(BiConsumer<TextDisplay,UUID> callback){
+        onSpawnCallback = callback;
     }
 }

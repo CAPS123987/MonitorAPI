@@ -4,19 +4,19 @@ public enum RenderMode {
     /**
      * Renders the display for all players on the server using displayEntity on server (text is shared)
      */
-    ALL_PLAYERS_ONE_DISPLAY(true,false),
+    ALL_PLAYERS_SHARED_DISPLAY(true,true),//Todo: check this
     /**
      * Renders the display for all players on the server using packets (text is individual)
      */
-    ALL_PLAYERS_ALL_DISPLAYS(true,true),
+    ALL_PLAYERS_INDIVIDUAL_DISPLAYS(true,false),
     /**
      * Renders the display for listed players on the server using displayEntity on server (text is shared)
      */
-    LISTED_PLAYERS_ONE_DISPLAY(false,false),
+    LISTED_PLAYERS_SHARED_DISPLAY(false,true),//Todo: check this
     /**
      * Renders the display for listed players on the server using packets (text is individual)
      */
-    LISTED_PLAYERS_ALL_DISPLAYS(false,true);
+    LISTED_PLAYERS_INDIVIDUAL_DISPLAYS(false,false);
     private boolean allPlayers;
     private boolean sharedDisplay;
     RenderMode(boolean allPlayers, boolean sharedDisplay) {
@@ -28,7 +28,7 @@ public enum RenderMode {
         return sharedDisplay;
     }
 
-    public boolean isAllPlayers() {
+    public boolean isForAllPlayers() {
         return allPlayers;
     }
 }
