@@ -1,4 +1,4 @@
-name: AdvancedTextDisplay
+name: MonitorAPI
 version: '${project.version}'
 main: me.caps123987.monitorapi.MonitorAPI
 api-version: '1.21'
