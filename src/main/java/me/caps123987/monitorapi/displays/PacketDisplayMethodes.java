@@ -51,23 +51,13 @@ public interface PacketDisplayMethodes {
             setDisplay((TextDisplay) getDisplay().createSnapshot().createEntity(location));
         }else{
             if(getRenderMode().isForAllPlayers()){
-                getPlayersDisplays().putAll(Packets.spawnTextDisplay(getDisplay()));
+                getPlayersDisplays().putAll(Packets.spawnTextDisplay(getDisplay(),getOnSpawnCallback()));
 
-                for(Map.Entry<UUID,TextDisplay> entry:getPlayersDisplays().entrySet()){
-                    Bukkit.getScheduler().runTaskLater(PLUGIN_INSTANCE, () -> {
-                        getOnSpawnCallback().accept(entry.getValue(),entry.getKey());
-                    }, 7);
-                }
 
                 allSharedDisplays.add(getInteractiveDisplay());
             }else{
-                getPlayersDisplays().putAll(Packets.spawnTextDisplay(getDisplay(), getViewers()));
+                getPlayersDisplays().putAll(Packets.spawnTextDisplay(getDisplay(), getViewers(),getOnSpawnCallback()));
 
-                for(Map.Entry<UUID,TextDisplay> entry:getPlayersDisplays().entrySet()){
-                    Bukkit.getScheduler().runTaskLater(PLUGIN_INSTANCE, () -> {
-                        getOnSpawnCallback().accept(entry.getValue(),entry.getKey());
-                    }, 7);
-                }
 
                 for(Map.Entry<UUID,TextDisplay> entry:getPlayersDisplays().entrySet()){
                     getViewers().add(entry.getKey());
@@ -294,10 +284,7 @@ public interface PacketDisplayMethodes {
 
     default void spawnDisplayNewPlayer(UUID uuid){
         if(getRenderMode().isForAllPlayers()) {
-            getPlayersDisplays().putAll(Packets.spawnTextDisplay(getDisplay(),Set.of(uuid)));
-            Bukkit.getScheduler().runTaskLater(PLUGIN_INSTANCE, () -> {
-                getOnSpawnCallback().accept(getPlayersDisplays().get(uuid),uuid);
-            }, 7);
+            getPlayersDisplays().putAll(Packets.spawnTextDisplay(getDisplay(),Set.of(uuid),getOnSpawnCallback()));
         }
     }
 }

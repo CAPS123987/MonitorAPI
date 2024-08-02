@@ -1,7 +1,7 @@
 name: MonitorAPI
 version: '${project.version}'
 main: me.caps123987.monitorapi.MonitorAPI
-api-version: '1.21'
+api-version: '1.20.6'
 authors: [CAPS123987]
 ##commands:
 ##  dtest:
