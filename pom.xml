@@ -6,7 +6,7 @@
 
   <groupId>me.CAPS123987</groupId>
   <artifactId>MonitorApi</artifactId>
-  <version>1.2-Beta</version>
+  <version>1.4-Beta</version>
   <packaging>jar</packaging>
 
   <name>Monitor API</name>
