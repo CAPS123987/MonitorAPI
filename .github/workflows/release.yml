@@ -1,7 +1,10 @@
 # This workflow will build the finished JAR with Maven and create a new release with it.
 
 name: Build MonitorAPI JAR
-on: [push]
+on: 
+  push:
+    branches:
+      - 'releases'
 permissions:
   actions: read
   contents: write
@@ -17,5 +20,5 @@ jobs:
       - run: mvn clean package
       - uses: softprops/action-gh-release@v2
         with:
-          tag_name: v${{github.run_number}}
+          tag_name: 1.${{github.run_number}}-Beta
           files: target/MonitorAPI.jar
