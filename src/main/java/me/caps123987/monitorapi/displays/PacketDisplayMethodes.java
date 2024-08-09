@@ -4,7 +4,6 @@ import me.caps123987.monitorapi.registry.DisplaysRegistry;
 import me.caps123987.monitorapi.utility.Packets;
 import me.caps123987.monitorapi.utility.TextUtility;
 import net.kyori.adventure.text.Component;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Display;
 import org.bukkit.entity.TextDisplay;
@@ -16,7 +15,6 @@ import java.util.UUID;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
-import static me.caps123987.monitorapi.MonitorAPI.PLUGIN_INSTANCE;
 import static me.caps123987.monitorapi.registry.DisplaysRegistry.allSharedDisplays;
 
 public interface PacketDisplayMethodes {
