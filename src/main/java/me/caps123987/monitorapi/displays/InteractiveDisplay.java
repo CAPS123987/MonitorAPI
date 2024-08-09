@@ -2,8 +2,11 @@ package me.caps123987.monitorapi.displays;
 
 import me.caps123987.monitorapi.utility.Packets;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.Display;
+import org.bukkit.entity.Player;
 import org.bukkit.entity.TextDisplay;
 
 import java.util.*;
@@ -208,6 +211,13 @@ public class InteractiveDisplay implements PacketDisplayMethodes{
     }
     @Override
     public void spawnDisplayNewPlayer(UUID uuid){
+        Player player = Bukkit.getPlayer(uuid);
+        if(player!=null){
+            World world = player.getWorld();
+            if(!world.equals(location.getWorld())){
+                return;
+            }
+        }
         if(getRenderMode().isForAllPlayers()) {
             getPlayersDisplays().putAll(Packets.spawnTextDisplay(getDisplay(),Set.of(uuid),getOnSpawnCallback()));
         }
