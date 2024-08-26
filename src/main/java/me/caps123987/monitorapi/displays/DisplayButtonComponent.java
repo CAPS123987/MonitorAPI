@@ -48,11 +48,23 @@ public class DisplayButtonComponent extends DisplayComponent{
     public void init(float yaw, float pitch, Location spawnedLocation) {
         componentInteraction.setRotation(yaw, pitch);
 
-        componentInteraction = (Interaction) componentInteraction.createSnapshot().createEntity(interactiveDisplay.getLocation().clone().add(calculatedRelativePosition));
+        Location spawnInteract = interactiveDisplay.getLocation().clone().add(calculatedRelativePosition);
+
+        spawnInteract.getChunk().load();
+
+        spawnInteract.getNearbyEntities(.1,.1,.1).forEach(e->{
+            if(e instanceof TextDisplay){
+                e.remove();
+            }
+        });
+
+        componentInteraction = (Interaction) componentInteraction.createSnapshot().createEntity(spawnInteract);
 
         setup(spawnedLocation);
 
         interactionEntity.put(componentInteraction.getUniqueId(),this);
+
+        spawnInteract.getChunk().unload();
     }
 
     @Override
