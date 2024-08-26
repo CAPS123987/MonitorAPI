@@ -53,7 +53,7 @@ public class DisplayButtonComponent extends DisplayComponent{
         spawnInteract.getChunk().load();
 
         spawnInteract.getNearbyEntities(.1,.1,.1).forEach(e->{
-            if(e instanceof TextDisplay){
+            if(e instanceof Interaction){
                 e.remove();
             }
         });
