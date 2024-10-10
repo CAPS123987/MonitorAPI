@@ -42,9 +42,9 @@ public class InteractiveDisplay implements PacketDisplayMethodes{
      *
      * @param mode render mode of the display (individual display, one display for all, etc.)
      */
-    public InteractiveDisplay(RenderMode mode) {
+    public InteractiveDisplay(RenderMode mode, World world) {
         this.mode = mode;
-        mainDisplay = createEntity(TextDisplay.class);
+        mainDisplay = createEntity(TextDisplay.class, world);
         mainDisplay.setBillboard(Display.Billboard.FIXED);
         mainDisplay.setAlignment(TextDisplay.TextAlignment.CENTER);
         mainDisplay.setRotation(0,0);
