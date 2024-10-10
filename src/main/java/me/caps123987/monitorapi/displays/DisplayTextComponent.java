@@ -2,6 +2,7 @@ package me.caps123987.monitorapi.displays;
 
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.TextDisplay;
 import org.bukkit.util.Vector;
 
@@ -20,9 +21,9 @@ public class DisplayTextComponent extends DisplayComponent{
      * creates new DisplayTextComponent at relative position to the InteractiveDisplay (will be set after {@link InteractiveDisplay#addComponent(DisplayComponent)})
      * @param relativePosition relative position (0,-2,0 means 2 blocks under)
      */
-    public DisplayTextComponent(Vector relativePosition) {
+    public DisplayTextComponent(Vector relativePosition, World world) {
         super(relativePosition);
-        componentDisplay = createEntity(TextDisplay.class);
+        componentDisplay = createEntity(TextDisplay.class, world);
     }
 
     /**

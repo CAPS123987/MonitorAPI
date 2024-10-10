@@ -1,12 +1,11 @@
 package me.caps123987.monitorapi.utility;
 
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.Entity;
 
-import static org.bukkit.Bukkit.getServer;
-
 public class EntityUtility {
-    public static <T extends Entity> T createEntity(Class<T> clazz) {
-        return getServer().getWorlds().getFirst().createEntity(new Location(getServer().getWorlds().getFirst(),0,0,0), clazz);
+    public static <T extends Entity> T createEntity(Class<T> clazz, World world) {
+        return world.createEntity(new Location(world,0,0,0), clazz);
     }
 }

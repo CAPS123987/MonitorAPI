@@ -4,6 +4,7 @@ import me.caps123987.monitorapi.messages.DisplayMessages;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.Interaction;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.TextDisplay;
@@ -33,10 +34,10 @@ public class DisplayButtonComponent extends DisplayComponent{
      * creates new DisplayButtonComponent at relative position to the InteractiveDisplay (will be set after {@link InteractiveDisplay#addComponent(DisplayComponent)})
      * @param relativePosition relative position (0,-2,0 means 2 blocks under)
      */
-    public DisplayButtonComponent(Vector relativePosition) {
+    public DisplayButtonComponent(Vector relativePosition, World world) {
         super(relativePosition);
-        componentDisplay = createEntity(TextDisplay.class);
-        componentInteraction = createEntity(Interaction.class);
+        componentDisplay = createEntity(TextDisplay.class, world);
+        componentInteraction = createEntity(Interaction.class, world);
 
         componentInteraction.setInteractionHeight(1.0f);
         componentInteraction.setInteractionWidth(1.0f);
