@@ -57,7 +57,7 @@
           <url>https://maven.evokegames.gg/snapshots</url>
       </repository>
       <repository>
-          <id>papermc-repo</id>
+          <id>papermc</id>
           <url>https://repo.papermc.io/repository/maven-public/</url>
       </repository>
       <repository>
@@ -72,9 +72,9 @@
 
   <dependencies>
       <dependency>
-          <groupId>io.papermc.paper</groupId>
-          <artifactId>paper-api</artifactId>
-          <version>1.21-R0.1-SNAPSHOT</version>
+          <groupId>dev.folia</groupId>
+          <artifactId>folia-api</artifactId>
+          <version>1.21.4-R0.1-SNAPSHOT</version>
           <scope>provided</scope>
       </dependency>
       <dependency>
