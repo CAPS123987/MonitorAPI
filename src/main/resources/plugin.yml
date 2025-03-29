@@ -7,5 +7,7 @@ authors: [CAPS123987]
 ##  dtest:
 ##    description: Test command
 ##    usage: /dtest
+
+folia-supported: true
 depend:
   - packetevents
