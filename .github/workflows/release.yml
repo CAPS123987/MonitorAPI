@@ -1,10 +1,10 @@
 name: Build MonitorAPI JAR
- on: 
-   push:
- permissions:
+on: 
+  push:
+permissions:
    actions: read
    contents: write
- jobs:
+jobs:
    build:
      runs-on: ubuntu-latest
      steps:
