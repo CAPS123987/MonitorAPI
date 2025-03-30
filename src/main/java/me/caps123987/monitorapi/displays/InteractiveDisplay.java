@@ -25,7 +25,7 @@ public class InteractiveDisplay implements PacketDisplayMethodes{
     protected TextDisplay mainDisplay;
     protected final Set<DisplayComponent> components = new HashSet<>();
     protected final Map<String,Object> data = new HashMap<>();
-    protected final Set<UUID> viewers = new HashSet<>();
+    public final Set<UUID> viewers = new HashSet<>();
     protected final Map<UUID,TextDisplay> playersDisplays = new HashMap<>();
 
     protected BiConsumer<TextDisplay, UUID> onSpawnCallback = (t,u)->{};

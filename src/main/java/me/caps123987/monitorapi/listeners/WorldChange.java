@@ -8,6 +8,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
 import java.util.UUID;
 
 import static me.caps123987.monitorapi.MonitorAPI.PLUGIN_INSTANCE;
@@ -21,8 +24,10 @@ public class WorldChange implements Listener {
     public static void spawnAll(Player player) {
         UUID uuid = player.getUniqueId();
 
-        Bukkit.getScheduler().runTaskLater(PLUGIN_INSTANCE, () -> {
-            for(InteractiveDisplay display : DisplaysRegistry.allSharedDisplays) {
+        PLUGIN_INSTANCE.getLogger().info("Spawning all displays for " + player.getName());
+
+        Bukkit.getGlobalRegionScheduler().runDelayed(PLUGIN_INSTANCE, (task) -> {
+            for (InteractiveDisplay display : DisplaysRegistry.allSharedDisplays) {
                 display.getViewers().add(uuid);
                 display.spawnDisplayNewPlayer(uuid);
             }

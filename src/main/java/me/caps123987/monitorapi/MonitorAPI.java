@@ -28,6 +28,8 @@ public final class MonitorAPI extends JavaPlugin {
                 .bStats(false)
                 .debug(true);
         PacketEvents.getAPI().load();
+
+        getLogger().severe("PacketEvents has been loaded!");
     }
     @Override
     public void onEnable() {
