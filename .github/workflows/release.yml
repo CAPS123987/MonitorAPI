@@ -15,11 +15,6 @@ jobs:
         with:
           java-version: '21'
           distribution: 'temurin'
-      - run: mvn clean package
-      - uses: softprops/action-gh-release@v2
-        with:
-          tag_name: 1.${{github.run_number}}-Beta
-          files: target/MonitorAPI.jar
   release:
     if: github.ref == 'refs/heads/releases'
     needs: [build]
