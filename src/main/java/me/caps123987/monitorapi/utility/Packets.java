@@ -37,7 +37,7 @@ public class Packets {
 
         for(UUID player : players){
             TextDisplay playerDisplay = (TextDisplay) display.createSnapshot().createEntity(display.getWorld());
-            playerDisplay.teleport(display.getLocation());
+            playerDisplay.teleportAsync(display.getLocation());
             spawnTextDisplay(playerDisplay, player,callback);
             entityIds.put(player, playerDisplay);
         }

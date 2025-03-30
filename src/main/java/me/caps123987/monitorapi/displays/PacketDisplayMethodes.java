@@ -43,7 +43,7 @@ public interface PacketDisplayMethodes {
         setSpawned(true);
 
         getDisplay().setRotation(location.getYaw(), location.getPitch());
-        getDisplay().teleport(location);
+        getDisplay().teleportAsync(location);
 
         if(getRenderMode().isSharedDisplay()) {
             setDisplay((TextDisplay) getDisplay().createSnapshot().createEntity(location));
