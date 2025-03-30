@@ -24,7 +24,7 @@ public class WorldChange implements Listener {
     public static void spawnAll(Player player) {
         UUID uuid = player.getUniqueId();
 
-        PLUGIN_INSTANCE.getLogger().info("Spawning all displays for " + player.getName());
+        //PLUGIN_INSTANCE.getLogger().info("Spawning all displays for " + player.getName());
 
         Bukkit.getGlobalRegionScheduler().runDelayed(PLUGIN_INSTANCE, (task) -> {
             for (InteractiveDisplay display : DisplaysRegistry.allSharedDisplays) {
